@@ -54,8 +54,8 @@ public class World extends SimState{
 		for(int i = 0; i < numZombies; i++){
 			Zombie zombie = new Zombie();
 			yard.setObjectLocation(	zombie, 
-									new Double2D(random.nextDouble()*yard.getWidth(),
-											 random.nextDouble()* yard.getHeight()));
+									new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width,
+									height*random.nextDouble()*0.8+height*0.1));
 			schedule.scheduleRepeating(zombie);
 			zombies.add(zombie);
 			for(Farmer f : farmers){
@@ -91,8 +91,22 @@ public class World extends SimState{
 		
 	}
 	public void setObstacles(){
-		for( int x=(int)(width*0.05);x<width*0.5-width*0.05;x++){
-			obstacles.field[x][(int)(height*0.1)]=1;
+		for( int x=(int)(width*0.05);x<width*0.95;x++){
+			obstacles.field[x][(int)(height*0.05)]=1;
+			obstacles.field[x][(int)(height*0.95)]=1;
+		}
+		for(int y=(int)(height*0.05);y<=height*0.95;y++){
+			obstacles.field[(int)(width*0.05)][y]=1;
+			obstacles.field[(int)(width*0.95)][y]=1;
+		}
+		for(int x=(int)(width*0.05);x<width*0.5-width*0.05;x++){
+			obstacles.field[x][(int)(height*0.5)]=1;
+			obstacles.field[x+(int)(width*0.25)][(int)(height*0.25)]=1;
+			obstacles.field[x+(int)(width*0.25)][(int)(height*0.75)]=1;
+		}
+		for(int y=(int)(height*0.25);y<=height*0.75;y++){
+			obstacles.field[(int)(width*0.5-width*0.05+width*0.25)][y]=1;
+			
 		}
 	}
 
