@@ -7,6 +7,9 @@ import sim.util.MutableDouble2D;
 
 public class Zombie extends SimulationAgent{
 
+	public Zombie() {
+		depth_of_view = 100;
+	}
 	@Override
 	protected void positionProcessing(World world) {
 

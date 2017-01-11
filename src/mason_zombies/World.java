@@ -44,8 +44,8 @@ public class World extends SimState{
 		for(int i = 0; i < numFarmers; i++){
 			Farmer farmer = new Farmer();
 			yard.setObjectLocation(	farmer, 
-					new Double2D(yard.getWidth() * 0.5 + random.nextDouble() - 0.5,
-							yard.getHeight() * 0.5 + random.nextDouble() - 0.5));
+					new Double2D(random.nextDouble()*yard.getWidth(),
+								 random.nextDouble()* yard.getHeight() ));
 			schedule.scheduleRepeating(farmer);
 			friends.addNode(farmer);
 			farmers.add(farmer);
@@ -54,8 +54,8 @@ public class World extends SimState{
 		for(int i = 0; i < numZombies; i++){
 			Zombie zombie = new Zombie();
 			yard.setObjectLocation(	zombie, 
-									new Double2D(yard.getWidth() * 0.5 + random.nextDouble() - 0.5,
-									yard.getHeight() * 0.5 + random.nextDouble() - 0.5));
+									new Double2D(random.nextDouble()*yard.getWidth(),
+											 random.nextDouble()* yard.getHeight()));
 			schedule.scheduleRepeating(zombie);
 			zombies.add(zombie);
 			for(Farmer f : farmers){
