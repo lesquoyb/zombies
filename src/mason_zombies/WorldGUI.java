@@ -48,7 +48,12 @@ public class WorldGUI extends GUIState {
 		yardPortrayal.setPortrayalForClass(Zombie.class, new HexagonalPortrayal2D(lcolor.get(2)));
 		//buddiesPortrayal.setField( new SpatialNetwork2D( world.yard, world.predators ) );
 		buddiesPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
-		
+		obstaclesPortrayal.setField(world.obstacles);
+		obstaclesPortrayal.setMap(new sim.util.gui.SimpleColorMap(
+                0,
+                1,
+                new Color(0,0,0,0),
+                new Color(255,255,255,255) ) );
 		// reschedule the displayer
 		display.reset();
 		
@@ -67,6 +72,7 @@ public class WorldGUI extends GUIState {
 		displayFrame.setVisible(true);
 		display.attach( yardPortrayal, "Yard" );
 		display.attach( buddiesPortrayal, "Buddies" );
+		display.attach(obstaclesPortrayal,"Obstacles");
 	}
 
 

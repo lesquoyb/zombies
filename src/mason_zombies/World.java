@@ -93,6 +93,7 @@ public class World extends SimState{
 	public void setObstacles(){
 		for( int x=(int)(width*0.05);x<width*0.5-width*0.05;x++){
 			obstacles.field[x][(int)(height*0.1)]=1;
+			obstacles.field[x][(int)(height*0.9)]=1;
 		}
 	}
 
