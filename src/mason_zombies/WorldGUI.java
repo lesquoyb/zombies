@@ -1,6 +1,8 @@
 package mason_zombies;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -10,6 +12,7 @@ import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.SimState;
 import sim.portrayal.continuous.ContinuousPortrayal2D;
+import sim.portrayal.grid.FastValueGridPortrayal2D;
 import sim.portrayal.network.NetworkPortrayal2D;
 import sim.portrayal.network.SimpleEdgePortrayal2D;
 import sim.portrayal.network.SpatialNetwork2D;
@@ -23,8 +26,9 @@ public class WorldGUI extends GUIState {
 	public JFrame displayFrame;
 	ContinuousPortrayal2D yardPortrayal = new ContinuousPortrayal2D();
 	NetworkPortrayal2D buddiesPortrayal = new NetworkPortrayal2D();
-
-
+	List<Color> lcolor=new ArrayList<Color>();
+	FastValueGridPortrayal2D obstaclesPortrayal = new FastValueGridPortrayal2D("Obstacle", true);  // immutable
+	
 	public void start()
 	{
 		super.start();
@@ -39,14 +43,15 @@ public class WorldGUI extends GUIState {
 		World world = (World) state;
 		// tell the portrayals what to portray and how to portray them
 		yardPortrayal.setField( world.yard );
-		yardPortrayal.setPortrayalForClass(Farmer.class,new OvalPortrayal2D(new Color(200,115,30)));
-		yardPortrayal.setPortrayalForClass(ArmedFarmer.class, new RectanglePortrayal2D(new Color(30,30,160)));
-		yardPortrayal.setPortrayalForClass(Zombie.class, new HexagonalPortrayal2D(new Color(30,155,80)));
-		buddiesPortrayal.setField( new SpatialNetwork2D( world.yard, world.predators ) );
+		yardPortrayal.setPortrayalForClass(Farmer.class,new OvalPortrayal2D(lcolor.get(0)));
+		yardPortrayal.setPortrayalForClass(ArmedFarmer.class, new RectanglePortrayal2D(lcolor.get(1)));
+		yardPortrayal.setPortrayalForClass(Zombie.class, new HexagonalPortrayal2D(lcolor.get(2)));
+		//buddiesPortrayal.setField( new SpatialNetwork2D( world.yard, world.predators ) );
 		buddiesPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
 		
 		// reschedule the displayer
 		display.reset();
+		
 		display.setBackdrop(Color.white);
 		// redraw the display
 		display.repaint();
@@ -86,12 +91,18 @@ public class WorldGUI extends GUIState {
 	
 	public WorldGUI(SimState state) {
 		super(state);
+		ColorList();
 	}
 	public WorldGUI(){
 		super(new World());
+		ColorList();
 	}
 
-
+	protected void ColorList(){
+		lcolor.add(new Color(200,115,30));
+		lcolor.add(new Color(30,30,160));
+		lcolor.add(new Color(30,155,80));
+	}
 	public static String getName()
 	{
 		return "Student Schoolyard Cliques";

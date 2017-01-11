@@ -5,6 +5,7 @@ import java.util.List;
 
 import sim.engine.SimState;
 import sim.field.continuous.Continuous2D;
+import sim.field.grid.IntGrid2D;
 import sim.field.network.Network;
 import sim.util.Bag;
 import sim.util.Double2D;
@@ -19,10 +20,12 @@ public class World extends SimState{
 	double randomMultiplier = 0.1;
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
+	public int width=(int)yard.getWidth();
+	public int height=(int)yard.getHeight();
 	List<Farmer> farmers = new ArrayList<>();
 	List<Zombie> zombies = new ArrayList<>();
 	List<ArmedFarmer> armedFarmers = new ArrayList<>();
-	
+	public IntGrid2D obstacles;
 	
 	public World(){
 		super(System.currentTimeMillis());
@@ -35,7 +38,9 @@ public class World extends SimState{
 		yard.clear();
 		predators.clear();
 		friends.clear();
-
+		obstacles=new IntGrid2D((int)yard.width,(int)yard.height,0);
+		setObstacles();
+		
 		for(int i = 0; i < numFarmers; i++){
 			Farmer farmer = new Farmer();
 			yard.setObjectLocation(	farmer, 
@@ -84,7 +89,11 @@ public class World extends SimState{
 		
 		
 	}
-
+	public void setObstacles(){
+		for( int x=(int)(width*0.05);x<width*0.5-width*0.05;x++){
+			obstacles.field[x][(int)(height*0.1)]=1;
+		}
+	}
 
 
 	public World(long seed) {
