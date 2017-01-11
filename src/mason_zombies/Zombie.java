@@ -11,7 +11,7 @@ public class Zombie extends SimulationAgent{
 	protected void positionProcessing(World world) {
 
 		movement = friendsBarycenter(world.predators.getEdgesOut(this), world.yard);
-		movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
+	//	movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
 		
 	}
 

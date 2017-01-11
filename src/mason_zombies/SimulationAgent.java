@@ -58,7 +58,9 @@ public abstract class SimulationAgent implements Steppable{
 		World world = (World) arg0;
 		
 		positionProcessing(world);
+		
 		movement.addIn(world.yard.getObjectLocation(this));
+		
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height));
 		world.yard.setObjectLocation(this, new Double2D(movement));

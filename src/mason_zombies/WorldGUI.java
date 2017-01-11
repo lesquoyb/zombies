@@ -66,7 +66,7 @@ public class WorldGUI extends GUIState {
 		c.registerFrame(displayFrame);        // so the frame appears in the "Display" list
 		displayFrame.setVisible(true);
 		display.attach( yardPortrayal, "Yard" );
-		display.attach( buddiesPortrayal, "Buddies" );
+	//	display.attach( buddiesPortrayal, "Buddies" );
 	}
 
 
