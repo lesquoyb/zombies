@@ -53,7 +53,7 @@ public class WorldGUI extends GUIState {
                 0,
                 1,
                 new Color(0,0,0,0),
-                new Color(255,255,255,255) ) );
+                new Color(0,0,0,255) ) );
 		// reschedule the displayer
 		display.reset();
 		
