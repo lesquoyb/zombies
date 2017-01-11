@@ -54,7 +54,7 @@ public class World extends SimState{
 			schedule.scheduleRepeating(zombie);
 			zombies.add(zombie);
 			for(Farmer f : farmers){
-				predators.addEdge(zombie, f, 1);
+				predators.addEdge(zombie, f, 1.);
 
 			}
 			
