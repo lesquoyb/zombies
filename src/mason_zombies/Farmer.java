@@ -15,6 +15,7 @@ public class Farmer implements Steppable{
 	final double SAFE = 3;
 	final double depth_of_view = 5;
 	
+
 	public MutableDouble2D friendsBarycenter(Bag people, Continuous2D yard){
 		Double2D me = yard.getObjectLocation(this);
 		
@@ -22,6 +23,7 @@ public class Farmer implements Steppable{
 		MutableDouble2D forceVector = new MutableDouble2D();
 		MutableDouble2D sumForces = new MutableDouble2D();
 		
+
 		int len = people.size();
 		for(int buddy = 0 ; buddy < len; buddy++){
 			

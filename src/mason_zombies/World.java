@@ -55,6 +55,7 @@ public class World extends SimState{
 			zombies.add(zombie);
 			for(Farmer f : farmers){
 				predators.addEdge(zombie, f, 1);
+
 			}
 			
 		}

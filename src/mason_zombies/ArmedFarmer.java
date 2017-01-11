@@ -13,6 +13,7 @@ public class ArmedFarmer extends Farmer{
 		
 		MutableDouble2D c = friendsBarycenter(world.friends.getAllNodes(), world.yard);
 		c.addIn(friendsBarycenter(world.predators.getEdgesOut(this), world.yard));
+
 		
 	}
 

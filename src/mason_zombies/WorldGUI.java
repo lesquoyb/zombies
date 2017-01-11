@@ -13,7 +13,8 @@ import sim.portrayal.continuous.ContinuousPortrayal2D;
 import sim.portrayal.network.NetworkPortrayal2D;
 import sim.portrayal.network.SimpleEdgePortrayal2D;
 import sim.portrayal.network.SpatialNetwork2D;
-import sim.portrayal.simple.OvalPortrayal2D;
+
+import sim.portrayal.simple.*;
 
 public class WorldGUI extends GUIState {
 
@@ -39,7 +40,10 @@ public class WorldGUI extends GUIState {
 		World world = (World) state;
 		// tell the portrayals what to portray and how to portray them
 		yardPortrayal.setField( world.yard );
-		yardPortrayal.setPortrayalForAll(new OvalPortrayal2D());
+
+		yardPortrayal.setPortrayalForClass(Farmer.class,new OvalPortrayal2D(new Color(200,115,30)));
+		yardPortrayal.setPortrayalForClass(ArmedFarmer.class, new RectanglePortrayal2D(new Color(30,30,160)));
+		yardPortrayal.setPortrayalForClass(Zombie.class, new HexagonalPortrayal2D(new Color(30,155,80)));
 		buddiesPortrayal.setField( new SpatialNetwork2D( world.yard, world.predators ) );
 		buddiesPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
 		
