@@ -15,19 +15,13 @@ public class Farmer implements Steppable{
 	final double SAFE = 3;
 	final double depth_of_view = 5;
 	
-	
-	@Override
-	public void step(SimState state) {
-		World world = (World) state;
-		
-	
-		Continuous2D yard = world.yard;
+	public MutableDouble2D friendsBarycenter(Bag people, Continuous2D yard){
 		Double2D me = yard.getObjectLocation(this);
 		
-		MutableDouble2D sumForces = new MutableDouble2D();
 		
 		MutableDouble2D forceVector = new MutableDouble2D();
-		Bag people = world.friends.getEdges(this, null);
+		MutableDouble2D sumForces = new MutableDouble2D();
+		
 		int len = people.size();
 		for(int buddy = 0 ; buddy < len; buddy++){
 			
@@ -54,9 +48,18 @@ public class Farmer implements Steppable{
 
 		sumForces.addIn(me);
 		sumForces.setX(Math.min(Math.max(0, sumForces.x), yard.width));//on ne sort pas de la map
-		sumForces.setY(Math.min(Math.max(0, sumForces.y), yard.height));//on ne sort pas de la map
+		sumForces.setY(Math.min(Math.max(0, sumForces.y), yard.height));
+		return sumForces;
+	}
+	
+	@Override
+	public void step(SimState state) {
+		World world = (World) state;
 		
-		yard.setObjectLocation(this, new Double2D(sumForces));	
+	
+		Bag people = world.friends.getEdges(this, null);
+			
+		world.yard.setObjectLocation(this, new Double2D(friendsBarycenter(people,  world.yard)));	
 		
 	}
 
