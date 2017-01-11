@@ -1,14 +1,13 @@
 package mason_zombies;
 
-import sim.engine.SimState;
-import sim.engine.Steppable;
-import sim.portrayal.inspector.StreamingPropertyInspector;
+public class ArmedFarmer extends Farmer{
 
-public class ArmedFarmer implements Steppable{
-
+	
 	@Override
-	public void step(SimState state) {
-		// TODO Auto-generated method stub
+	protected void positionProcessing(World world) {
+		movement = friendsBarycenter(world.friends.getAllNodes(), world.yard);
+		movement.addIn(friendsBarycenter(world.predators.getEdgesOut(this), world.yard));
+		
 		
 	}
 
