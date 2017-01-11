@@ -54,8 +54,8 @@ public class World extends SimState{
 		for(int i = 0; i < numZombies; i++){
 			Zombie zombie = new Zombie();
 			yard.setObjectLocation(	zombie, 
-									new Double2D(yard.getWidth() * 0.5 + random.nextDouble() - 0.5,
-									yard.getHeight() * 0.5 + random.nextDouble() - 0.5));
+									new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width,
+									height*random.nextDouble()*0.8+height*0.1));
 			schedule.scheduleRepeating(zombie);
 			zombies.add(zombie);
 			for(Farmer f : farmers){
