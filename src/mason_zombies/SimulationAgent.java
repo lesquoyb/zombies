@@ -24,17 +24,17 @@ public abstract class SimulationAgent implements Steppable{
 
 		MutableDouble2D forceVector = new MutableDouble2D();
 		MutableDouble2D sumForces = new MutableDouble2D();
-		double buddines=0;
+		//double buddines=0;
 
 		int len = people.size();
 		for(int buddy = 0 ; buddy < len; buddy++){
 			Edge e = (Edge)(people.get(buddy));
-			 buddines += ((Double)(e.info)).doubleValue();
+			// buddines += ((Double)(e.info)).doubleValue();
 		}
 		for(int buddy = 0 ; buddy < len; buddy++){
 
 			Edge e = (Edge)(people.get(buddy));
-			double buddiness = ((Double)(e.info)).doubleValue()/buddines;
+			double buddiness = ((Double)(e.info)).doubleValue()/*buddines;*/;
 			Double2D him = yard.getObjectLocation(e.getOtherNode(this));
 			if(him != null){
 				if (buddiness >= 0) {
@@ -54,7 +54,11 @@ public abstract class SimulationAgent implements Steppable{
 				sumForces.addIn(forceVector);
 			}
 		}
+		sumForces.x=sumForces.x/yard.width;
+		sumForces.y=sumForces.y/yard.height;
+		System.out.println(sumForces);
 		return sumForces;
+		
 	}
 
 	abstract protected void positionProcessing(World world) ;
@@ -80,9 +84,9 @@ public abstract class SimulationAgent implements Steppable{
 		
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
-		if(this.getClass()!=Zombie.class)movement=miniBresenham(me,movement,world,world.obstacles.field);
-		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
-		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
+		//if(this.getClass()!=Zombie.class)movement=miniBresenham(me,movement,world,world.obstacles.field);
+		//movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
+		//movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
 		world.yard.setObjectLocation(this, new Double2D(movement));
 	}
 	

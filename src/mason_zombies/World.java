@@ -83,7 +83,7 @@ public class World extends SimState{
 		zombies.clear();
 		
 		obstacles = new IntGrid2D((int)yard.width,(int)yard.height,0);
-		setObstacles();
+		//setObstacles();
 		
 		for(int i = 0; i < numFarmers; i++){
 			Farmer farmer = new Farmer();
@@ -146,7 +146,7 @@ public class World extends SimState{
 		
 	}
 	
-	
+	/*
 	public void setObstacles(){
 		for( int x=(int)(width*0.05);x<width*0.95;x++){
 			obstacles.field[x][(int)(height*0.05)]=1;
@@ -166,7 +166,7 @@ public class World extends SimState{
 			
 		}
 	}
-
+*/
 
 	public World(long seed) {
 		super(seed);
