@@ -5,7 +5,9 @@ import sim.util.Bag;
 public class Farmer extends SimulationAgent{
 
 	
-	
+	public Farmer(){
+		max_dist = 3;
+	}
 
 	double fear = 2;
 	@Override

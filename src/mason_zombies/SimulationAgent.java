@@ -56,7 +56,6 @@ public abstract class SimulationAgent implements Steppable{
 		}
 		sumForces.x=sumForces.x/yard.width;
 		sumForces.y=sumForces.y/yard.height;
-		System.out.println(sumForces);
 		return sumForces;
 		
 	}
@@ -74,7 +73,6 @@ public abstract class SimulationAgent implements Steppable{
 		positionProcessing(world);
 
 
-		movement.multiplyIn(5./max_dist);
 	
 		movement.setLength(Math.min(movement.length(), max_dist));
 
