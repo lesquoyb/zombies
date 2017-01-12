@@ -26,19 +26,19 @@ public class WorldGUI extends GUIState {
 	public JFrame displayFrame;
 	ContinuousPortrayal2D yardPortrayal = new ContinuousPortrayal2D();
 	NetworkPortrayal2D buddiesPortrayal = new NetworkPortrayal2D();
-	List<Color> lcolor=new ArrayList<Color>();
-	FastValueGridPortrayal2D obstaclesPortrayal = new FastValueGridPortrayal2D("Obstacle", true);  // immutable
+	List<Color> lcolor = new ArrayList<Color>();
+	FastValueGridPortrayal2D obstaclesPortrayal = new FastValueGridPortrayal2D("Obstacle", true);
 	
-	public void start()
-	{
+	public void start(){
 		super.start();
 		setupPortrayals();
 	}
-	public void load(SimState state)
-	{
+	
+	public void load(SimState state){
 		super.load(state);
 		setupPortrayals();
 	}
+	
 	public void setupPortrayals(){
 		World world = (World) state;
 		// tell the portrayals what to portray and how to portray them
@@ -61,8 +61,7 @@ public class WorldGUI extends GUIState {
 		// redraw the display
 		display.repaint();
 	}
-	public void init(Controller c)
-	{
+	public void init(Controller c){
 		super.init(c);
 		display = new Display2D(600,600,this);
 		display.setClipping(false);
@@ -79,8 +78,7 @@ public class WorldGUI extends GUIState {
 
 
 
-	public void quit()
-	{
+	public void quit(){
 		super.quit();
 		if (displayFrame!=null) displayFrame.dispose();
 		displayFrame = null;
@@ -107,9 +105,9 @@ public class WorldGUI extends GUIState {
 	}
 
 	protected void ColorList(){
-		lcolor.add(new Color(200,115,30));
-		lcolor.add(new Color(30,30,160));
-		lcolor.add(new Color(30,155,80));
+		lcolor.add(new Color(255,0,0));
+		lcolor.add(new Color(0,0,255));
+		lcolor.add(new Color(0,255,0));
 	}
 	public static String getName()
 	{

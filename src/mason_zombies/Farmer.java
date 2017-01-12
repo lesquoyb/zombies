@@ -15,6 +15,7 @@ public class Farmer extends SimulationAgent{
 		Bag people = world.friends.getEdges(this, null);
 		movement = friendsBarycenter(people,  world.yard);
 		movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard));
+		movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate().multiplyIn(3));
 		
 	}
 

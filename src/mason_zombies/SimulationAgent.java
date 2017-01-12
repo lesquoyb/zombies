@@ -13,9 +13,9 @@ public abstract class SimulationAgent implements Steppable{
 
 
 
-	protected double SAFE = 15;
-	protected double depth_of_view = 35;
-	protected double max_dist;
+	protected double max_dist = 3;
+	protected double SAFE = 3*max_dist;
+	protected double depth_of_view = 7*max_dist;
 	protected MutableDouble2D movement;
 
 	public MutableDouble2D friendsBarycenter(Bag people, Continuous2D yard){
@@ -57,17 +57,21 @@ public abstract class SimulationAgent implements Steppable{
 
 	@Override
 	public void step(SimState arg0) {
+		
 		World world = (World) arg0;
-		Double2D me = yard.getObjectLocation(this);
+
+		Double2D me = world.yard.getObjectLocation(this);
 		max_dist = Math.max(world.yard.height, world.yard.width)/10;
+
 		
 		positionProcessing(world);
-		//System.out.println(world.yard.height);
-		//movement.setLength(Math.max(Math.min(max_dist, movement.length()), 0));
+
 
 		movement.multiplyIn(5./max_dist);
 		//if(world.obstacles.field[(int)(me.x-1)][(int)me.y]==1)movement.x+1.;
-		
+
+		movement.setLength(Math.min(movement.length(), max_dist));
+
 		movement.addIn(world.yard.getObjectLocation(this));
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height));

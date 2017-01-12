@@ -15,6 +15,7 @@ public class World extends SimState{
 
 	public Continuous2D yard = new Continuous2D(1.0, 100, 100);
 	public int numFarmers = 50;
+	public int numArmed = 10;
 	public int numZombies = 10;
 	double forceToSchoolMultiplier = 0.01;
 	double randomMultiplier = 0.1;
@@ -32,13 +33,22 @@ public class World extends SimState{
 	}
 	
 
+	public void isEaten(Farmer f){
+		farmers.remove(f);
+		armedFarmers.remove(f);
+		friends.removeNode(f);
+		predators.removeNode(f);
+	}
 	public void start(){
 		super.start();
 		
 		yard.clear();
 		predators.clear();
 		friends.clear();
-		obstacles=new IntGrid2D((int)yard.width,(int)yard.height,0);
+		farmers.clear();
+		armedFarmers.clear();
+		
+		obstacles = new IntGrid2D((int)yard.width,(int)yard.height,0);
 		setObstacles();
 		
 		for(int i = 0; i < numFarmers; i++){
@@ -50,7 +60,7 @@ public class World extends SimState{
 			friends.addNode(farmer);
 			farmers.add(farmer);
 		}
-		
+
 		for(int i = 0; i < numZombies; i++){
 			Zombie zombie = new Zombie();
 			yard.setObjectLocation(	zombie, 
@@ -60,9 +70,7 @@ public class World extends SimState{
 			zombies.add(zombie);
 			for(Farmer f : farmers){
 				predators.addEdge(zombie, f, 1.);
-
 			}
-			
 		}
 
 		Bag friendsBag = friends.getAllNodes();
@@ -90,6 +98,8 @@ public class World extends SimState{
 		
 		
 	}
+	
+	
 	public void setObstacles(){
 		for( int x=(int)(width*0.05);x<width*0.95;x++){
 			obstacles.field[x][(int)(height*0.05)]=1;
@@ -115,4 +125,7 @@ public class World extends SimState{
 		super(seed);
 	}
 
+	
+	
+	
 }
