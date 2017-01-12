@@ -9,7 +9,7 @@ public class Zombie extends SimulationAgent{
 
 	public Zombie() {
 		depth_of_view = 100;
-		max_dist = 0.05;
+		max_dist = 5;
 	}
 
 
@@ -42,10 +42,12 @@ public class Zombie extends SimulationAgent{
 		}
 		if( dist< max_dist*max_dist*2 ){
 			world.isEaten(nearest);
+			movement = new MutableDouble2D();
 		}
-		
-		Double2D aim = world.yard.getObjectLocation(nearest);
-		movement = new MutableDouble2D(me.x - aim.x , me.y - aim.y);
+		else{
+			Double2D aim = world.yard.getObjectLocation(nearest);
+			movement = new MutableDouble2D(me.x - aim.x , me.y - aim.y);
+		}
 		//	movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
 
 	}

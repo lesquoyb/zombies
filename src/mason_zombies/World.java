@@ -1,9 +1,12 @@
 package mason_zombies;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sim.engine.SimState;
+import sim.engine.Stoppable;
 import sim.field.continuous.Continuous2D;
 import sim.field.grid.IntGrid2D;
 import sim.field.network.Network;
@@ -26,6 +29,7 @@ public class World extends SimState{
 	List<Farmer> farmers = new ArrayList<>();
 	List<Zombie> zombies = new ArrayList<>();
 	List<ArmedFarmer> armedFarmers = new ArrayList<>();
+	Map<SimulationAgent, Stoppable> stop = new HashMap();
 	public IntGrid2D obstacles;
 	
 	public World(){
@@ -38,6 +42,9 @@ public class World extends SimState{
 		armedFarmers.remove(f);
 		friends.removeNode(f);
 		predators.removeNode(f);
+		yard.remove(f);
+		stop.get(f).stop();
+		System.out.println("" + farmers.size() + " " + yard.size());
 	}
 	public void start(){
 		super.start();
@@ -47,6 +54,7 @@ public class World extends SimState{
 		friends.clear();
 		farmers.clear();
 		armedFarmers.clear();
+		stop.clear();
 		
 		obstacles = new IntGrid2D((int)yard.width,(int)yard.height,0);
 		setObstacles();
@@ -56,7 +64,7 @@ public class World extends SimState{
 			yard.setObjectLocation(	farmer, 
 					new Double2D(random.nextDouble()*yard.getWidth(),
 								 random.nextDouble()* yard.getHeight() ));
-			schedule.scheduleRepeating(farmer);
+			stop.put(farmer, schedule.scheduleRepeating(farmer));
 			friends.addNode(farmer);
 			farmers.add(farmer);
 		}
@@ -66,7 +74,7 @@ public class World extends SimState{
 			yard.setObjectLocation(	zombie, 
 									new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width,
 									height*random.nextDouble()*0.8+height*0.1));
-			schedule.scheduleRepeating(zombie);
+			stop.put(zombie, schedule.scheduleRepeating(zombie));
 			zombies.add(zombie);
 			for(Farmer f : farmers){
 				predators.addEdge(zombie, f, 1.);
