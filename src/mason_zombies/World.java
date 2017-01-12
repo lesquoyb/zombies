@@ -19,9 +19,7 @@ public class World extends SimState{
 	public Continuous2D yard = new Continuous2D(1.0, 100, 100);
 	public int numFarmers = 50;
 	public int numArmed = 10;
-	public int numZombies = 10;
-	double forceToSchoolMultiplier = 0.01;
-	double randomMultiplier = 0.1;
+	public int numZombies = 1;
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
 	public int width=(int)yard.getWidth();
