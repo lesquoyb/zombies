@@ -51,8 +51,8 @@ public abstract class SimulationAgent implements Steppable{
 				sumForces.addIn(forceVector);
 			}
 		}
-		//sumForces.x=sumForces.x/yard.width;
-		//sumForces.y=sumForces.y/yard.height;
+		sumForces.x=sumForces.x/yard.width;
+		sumForces.y=sumForces.y/yard.height;
 		return sumForces;
 
 	}

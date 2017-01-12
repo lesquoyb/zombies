@@ -7,7 +7,7 @@ import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
 
-public class Arme extends SimulationAgent{
+public class Arme implements Steppable{
 	MutableDouble2D pos;
 
 
@@ -31,11 +31,6 @@ public class Arme extends SimulationAgent{
 			
 		
 
-	}
-	@Override
-	protected void positionProcessing(World world) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

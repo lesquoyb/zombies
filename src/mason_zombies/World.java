@@ -63,7 +63,7 @@ public class World extends SimState{
 	public void removeWeapon(Arme w){
 		yard.remove(w);
 		weapons.remove(w);
-		stop.get(w).stop();
+		
 	}
 	public void isEaten(Farmer f){
 		Double2D c = yard.getObjectLocation(f);
@@ -206,7 +206,7 @@ public class World extends SimState{
 		Arme w = new Arme();
 		weapons.add(w);
 		yard.setObjectLocation(w, pos);
-		stop.put(w, schedule.scheduleRepeating(w));
+		
 	}
 
 }
