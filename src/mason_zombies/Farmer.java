@@ -21,21 +21,20 @@ public class Farmer extends SimulationAgent{
 		Double2D me = world.yard.getObjectLocation(this);
 		for(Arme a : world.weapons){
 			Double2D d = world.yard.getObjectLocation(a);
-			if(d.distance(me) < 10 && d.distance(me) < dist){
+			if( d.distance(me) < dist){
 				dist = d.distance(me);
 				nearest = a;
 			}
 		}
 		if(nearest != null){
-			if(dist < 1){
-				world.addArmedFarmer(me, true);
+			if(dist < max_dist){
+				world.addArmedFarmer(world.yard.getObjectLocation(nearest), true);
 				world.removeFarmer(this);
-				world.removeWeapon(nearest);
-				world.addWeapon(new Double2D(world.random.nextDouble()*world.yard.getWidth()*0.80+0.1*world.width, world.random.nextDouble()* world.yard.getHeight()*0.80+0.1*world.height ));
+				nearest.mouv(world);
 				dead = true;
 			}
 			else
-				movement.addIn(world.yard.getObjectLocation(nearest).add(me.negate()).multiply(1));
+				movement.addIn(world.yard.getObjectLocation(nearest).add(me.negate()).multiply(0.3));
 			
 		}
 	}
