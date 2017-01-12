@@ -12,6 +12,7 @@ import sim.field.grid.IntGrid2D;
 import sim.field.network.Network;
 import sim.util.Bag;
 import sim.util.Double2D;
+import sim.util.MutableDouble2D;
 
 public class World extends SimState{
 	
@@ -20,10 +21,12 @@ public class World extends SimState{
 	public int numFarmers = 50;
 	public int numArmed = 1;
 	public int numZombies = 10;
+	public int nbcaisse=1;
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
 	public int width=(int)yard.getWidth();
 	public int height=(int)yard.getHeight();
+	List<Arme> arme = new ArrayList<>();
 	List<Farmer> farmers = new ArrayList<>();
 	List<Zombie> zombies = new ArrayList<>();
 	List<ArmedFarmer> armedFarmers = new ArrayList<>();
@@ -89,6 +92,7 @@ public class World extends SimState{
 		stop.clear();
 		bullets.clear();
 		zombies.clear();
+		arme.clear();
 		
 		obstacles = new IntGrid2D((int)yard.width,(int)yard.height,0);
 		//setObstacles();
@@ -105,7 +109,10 @@ public class World extends SimState{
 		for(int i = 0; i < numZombies; i++){
 			addZombie(new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width, height*random.nextDouble()*0.8+height*0.1));
 		}
-
+		
+		for(int i=0;i<nbcaisse;i++){
+			addArme(new Double2D(width*random.nextDouble(),height*random.nextDouble()));
+		}
 		Bag friendsBag = friends.getAllNodes();
 		for(int i = 0; i < friendsBag.size(); i++){
 			Object friend = friendsBag.get(i);
@@ -181,6 +188,11 @@ public class World extends SimState{
 		stop.put(farmer, schedule.scheduleRepeating(farmer));
 		friends.addNode(farmer);
 		armedFarmers.add(farmer);
+	}
+	public void addArme(Double2D pos){
+		Arme arme=new Arme();
+		yard.setObjectLocation(arme, pos);
+		this.arme.add(arme);
 	}
 	
 }
