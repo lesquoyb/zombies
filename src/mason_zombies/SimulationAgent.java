@@ -60,8 +60,15 @@ public abstract class SimulationAgent implements Steppable{
 		
 		World world = (World) arg0;
 
+		Double2D me = world.yard.getObjectLocation(this);
+		max_dist = Math.max(world.yard.height, world.yard.width)/10;
+
 		
 		positionProcessing(world);
+
+
+		movement.multiplyIn(5./max_dist);
+		//if(world.obstacles.field[(int)(me.x-1)][(int)me.y]==1)movement.x+1.;
 
 		movement.setLength(Math.min(movement.length(), max_dist));
 
