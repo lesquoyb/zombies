@@ -44,8 +44,6 @@ public class World extends SimState{
 		for(int i = 0; i < numFarmers; i++){
 			Farmer farmer = new Farmer();
 			yard.setObjectLocation(	farmer, 
-					new Double2D(random.nextDouble()*yard.getWidth(),
-								 random.nextDouble()* yard.getHeight() ));
 			schedule.scheduleRepeating(farmer);
 			friends.addNode(farmer);
 			farmers.add(farmer);

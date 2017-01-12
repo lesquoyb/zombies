@@ -58,7 +58,7 @@ public abstract class SimulationAgent implements Steppable{
 	@Override
 	public void step(SimState arg0) {
 		World world = (World) arg0;
-
+		Double2D me = yard.getObjectLocation(this);
 		max_dist = Math.max(world.yard.height, world.yard.width)/10;
 		
 		positionProcessing(world);
@@ -66,7 +66,7 @@ public abstract class SimulationAgent implements Steppable{
 		//movement.setLength(Math.max(Math.min(max_dist, movement.length()), 0));
 
 		movement.multiplyIn(5./max_dist);
-
+		//if(world.obstacles.field[(int)(me.x-1)][(int)me.y]==1)movement.x+1.;
 		
 		movement.addIn(world.yard.getObjectLocation(this));
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width));//on ne sort pas de la map
