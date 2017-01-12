@@ -172,7 +172,7 @@ public class World extends SimState{
 	}
 
 	
-	private void addFarmer(Double2D pos){
+	public void addFarmer(Double2D pos){
 		Farmer farmer = new Farmer();
 		yard.setObjectLocation(	farmer, pos);
 		stop.put(farmer, schedule.scheduleRepeating(farmer));

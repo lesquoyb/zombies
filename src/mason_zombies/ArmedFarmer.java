@@ -4,9 +4,11 @@ import sim.util.Double2D;
 
 public class ArmedFarmer extends Farmer{
 
+	int remaining_shots;
 	public ArmedFarmer() {
 		max_dist = 0.1;
 		last = - limit;
+		remaining_shots = 2;
 	}
 	
 	double range = 20;
@@ -22,6 +24,11 @@ public class ArmedFarmer extends Farmer{
 			if(z.distance(me) < range && world.schedule.getSteps() - last > limit){
 				world.fire(me, z);
 				last = world.schedule.getSteps();
+				remaining_shots --;
+				if (remaining_shots == 0){
+					world.removeFarmer(this);
+					world.addFarmer(me);
+				}
 			}
 		}
 	}
