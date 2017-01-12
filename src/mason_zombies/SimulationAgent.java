@@ -24,13 +24,17 @@ public abstract class SimulationAgent implements Steppable{
 
 		MutableDouble2D forceVector = new MutableDouble2D();
 		MutableDouble2D sumForces = new MutableDouble2D();
-
+		double buddines=0;
 
 		int len = people.size();
 		for(int buddy = 0 ; buddy < len; buddy++){
+			Edge e = (Edge)(people.get(buddy));
+			 buddines += ((Double)(e.info)).doubleValue();
+		}
+		for(int buddy = 0 ; buddy < len; buddy++){
 
 			Edge e = (Edge)(people.get(buddy));
-			double buddiness = ((Double)(e.info)).doubleValue();
+			double buddiness = ((Double)(e.info)).doubleValue()/buddines;
 			Double2D him = yard.getObjectLocation(e.getOtherNode(this));
 			if(him != null){
 				if (buddiness >= 0) {
@@ -71,29 +75,65 @@ public abstract class SimulationAgent implements Steppable{
 		movement.setLength(Math.min(movement.length(), max_dist));
 
 		movement.addIn(world.yard.getObjectLocation(this));
-		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width));//on ne sort pas de la map
-		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height));
-		movement=miniBrasenham(me,movement,world);
 		
+		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
+		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
+		if(this.getClass()!=Zombie.class)movement=miniBrasenham(me,movement,world);
+		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
+		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
 		world.yard.setObjectLocation(this, new Double2D(movement));
 	}
 	
 	public MutableDouble2D miniBrasenham( Double2D p2,MutableDouble2D p1,World world){
 		MutableDouble2D res=new MutableDouble2D();
-		res.x=p2.x;
-		res.y=p2.y;
-		Double2D delta=new Double2D(p1.x-p2.x,p1.y-p2.y);
+		int x=(int)Math.round(p1.x),x2=(int)Math.round(p2.x),y=(int)Math.round(p1.y),y2=(int)Math.round(p2.y);
+		boolean steep=y-y2 > x-x2;
+		
+		if(steep){
+			int tmp=x;
+			x=y;
+			y=tmp;
+			tmp=x2;
+			x2=y2;
+			y2=tmp;
+			
+		}
+		if(x<x2){
+		
+			int tmp=x;
+			x=x2;
+			x2=tmp;
+			tmp=y;
+			y=y2;
+			y2=tmp;
+		}
+		res.x=x2;
+		res.y=y2;
+		Double2D delta=new Double2D(x-x2,y-y2);
 		double e=2*delta.y-delta.x;
 		for(int i=1;i<delta.x;i++){
 			while(e>=0){
-				if(world.obstacles.field[(int)res.x][(int)res.y+1]==0)
-					res.y+=1;
+				res.y+=1;
+				
+				res.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
+				if(world.obstacles.field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
+					res.y-=1;
+					
 				e-=2*delta.x;
 			}
-			if(world.obstacles.field[(int)res.x+1][(int)res.y]==0)
-				res.x+=1;
+			res.x+=1;
+			res.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
+			if(world.obstacles.field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
+				res.x-=1;
 			e+=2*delta.y;
 		}
+		
+		if(steep){
+			double tmp=res.x;
+			res.x=res.y;
+			res.y=tmp;
+		}
+		
 		return res;
 	}
 
