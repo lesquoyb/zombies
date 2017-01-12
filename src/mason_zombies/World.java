@@ -18,9 +18,9 @@ public class World extends SimState{
 
 	public Continuous2D yard = new Continuous2D(1.0, 100, 100);
 	public int numFarmers = 50;
-	public int numArmed = 1;
+	public int numArmed = 0;
 	public int numZombies = 20;
-	public int numWeapons = 1;
+	public int numWeapons = 3;
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
 	public int width=(int)yard.getWidth();
@@ -47,12 +47,12 @@ public class World extends SimState{
 	}
 	
 	public void removeFarmer(Farmer f){
+		stop.get(f).stop();
 		farmers.remove(f);
 		armedFarmers.remove(f);
 		friends.removeNode(f);
 		predators.removeNode(f);
 		yard.remove(f);
-		stop.get(f).stop();
 	}
 	
 	
@@ -60,6 +60,7 @@ public class World extends SimState{
 		yard.remove(w);
 		weapons.remove(w);
 		stop.get(w).stop();
+		w.dead = true;
 	}
 	public void isEaten(Farmer f){
 		Double2D c = yard.getObjectLocation(f);
@@ -85,6 +86,28 @@ public class World extends SimState{
 		stop.put(b, schedule.scheduleRepeating(b));
 	}
 	
+	
+	private void setFriends(Object friend, Bag friendsBag){
+
+		//amis
+		Object friendB = null;
+		do
+			friendB = friendsBag.get(random.nextInt(friendsBag.numObjs));
+		while (friend == friendB);
+		
+		double buddiness = random.nextDouble();
+		friends.addEdge(friend, friendB, new Double(buddiness));
+
+		
+		//pas amis
+		do
+			friendB = friendsBag.get(random.nextInt(friendsBag.numObjs));
+		while (friend == friendB);
+		buddiness = random.nextDouble();
+		friends.addEdge(friend, friendB, new Double( -buddiness));
+
+	}
+	
 
 	public void start(){
 		super.start();
@@ -103,11 +126,11 @@ public class World extends SimState{
 		//setObstacles();
 		
 		for(int i = 0; i < numFarmers; i++){
-			addFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
+			addFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ), false);
 		}
 		
 		for(int i = 0; i < numArmed; i++){
-			addArmedFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
+			addArmedFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ), false);
 		}
 		
 
@@ -120,25 +143,8 @@ public class World extends SimState{
 		}
 
 		Bag friendsBag = friends.getAllNodes();
-		for(int i = 0; i < friendsBag.size(); i++){
-			Object friend = friendsBag.get(i);
-
-			//amis
-			Object friendB = null;
-			do
-				friendB = friendsBag.get(random.nextInt(friendsBag.numObjs));
-			while (friend == friendB);
-			
-			double buddiness = random.nextDouble();
-			friends.addEdge(friend, friendB, new Double(buddiness));
-
-			
-			//pas amis
-			do
-				friendB = friendsBag.get(random.nextInt(friendsBag.numObjs));
-			while (friend == friendB);
-			buddiness = random.nextDouble();
-			friends.addEdge(friend, friendB, new Double( -buddiness));
+		for(Object friend : friendsBag){
+			setFriends(friend, friendsBag);			
 		}
 		
 		
@@ -172,12 +178,15 @@ public class World extends SimState{
 	}
 
 	
-	public void addFarmer(Double2D pos){
+	public void addFarmer(Double2D pos, boolean friend){
 		Farmer farmer = new Farmer();
 		yard.setObjectLocation(	farmer, pos);
 		stop.put(farmer, schedule.scheduleRepeating(farmer));
 		friends.addNode(farmer);
 		farmers.add(farmer);
+		if(friend){
+			setFriends(farmer, friends.getAllNodes());
+		}
 	}
 	private void addZombie(Double2D pos){
 		Zombie zombie = new Zombie();
@@ -188,12 +197,15 @@ public class World extends SimState{
 			predators.addEdge(zombie, f, 1.);
 		}
 	}
-	public void addArmedFarmer(Double2D pos){
+	public void addArmedFarmer(Double2D pos, boolean friend){
 		ArmedFarmer farmer = new ArmedFarmer();
 		yard.setObjectLocation(	farmer, pos);
 		stop.put(farmer, schedule.scheduleRepeating(farmer));
 		friends.addNode(farmer);
 		armedFarmers.add(farmer);
+		if(friend){
+			setFriends(farmer, friends.getAllNodes());
+		}
 	}
 	public void addWeapon(Double2D pos){
 		Arme w = new Arme();

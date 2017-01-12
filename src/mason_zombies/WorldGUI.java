@@ -115,6 +115,6 @@ public class WorldGUI extends GUIState {
 	}
 	public static String getName()
 	{
-		return "Student Schoolyard Cliques";
+		return "Simulation d'attaque de zombies";
 	}
 }

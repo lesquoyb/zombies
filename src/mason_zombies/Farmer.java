@@ -28,7 +28,7 @@ public class Farmer extends SimulationAgent{
 		}
 		if(nearest != null){
 			if(dist < 1){
-				world.addArmedFarmer(me);
+				world.addArmedFarmer(me, true);
 				world.removeFarmer(this);
 				world.removeWeapon(nearest);
 				world.addWeapon(new Double2D(world.random.nextDouble()*world.yard.getWidth()*0.80+0.1*world.width, world.random.nextDouble()* world.yard.getHeight()*0.80+0.1*world.height ));

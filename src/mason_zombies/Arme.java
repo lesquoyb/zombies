@@ -15,15 +15,7 @@ public class Arme extends SimulationAgent{
 		
 		
 	}
-	public void attract(Bag gins){
-		int len=gins.size();
-		for(int i=0;i<len;i++){
-			
-		
-			
-			
-		}
-	}
+
 	@Override
 	protected void positionProcessing(World world) {
 		// TODO Auto-generated method stub
