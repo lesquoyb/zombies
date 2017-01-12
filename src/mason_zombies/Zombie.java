@@ -17,38 +17,41 @@ public class Zombie extends SimulationAgent{
 	@Override
 	protected void positionProcessing(World world) {
 
-		Farmer nearest = null;
-		double dist = Double.MAX_VALUE;
-		Double2D me = world.yard.getObjectLocation(this);
-		Double2D next;
-		for(Farmer f : world.farmers){
-			next = world.yard.getObjectLocation(f);
-			if(next != null){
-				if(me.distance(next) < dist){
-					dist = me.distance(next);
-					nearest = f;
+		if(world.friends.getAllNodes().size() > 0){
+			Farmer nearest = null;
+			double dist = Double.MAX_VALUE;
+			Double2D me = world.yard.getObjectLocation(this);
+			Double2D next;
+			for(Farmer f : world.farmers){
+				next = world.yard.getObjectLocation(f);
+				if(next != null){
+					if(me.distance(next) < dist){
+						dist = me.distance(next);
+						nearest = f;
+					}
 				}
 			}
-		}
-		for(Farmer f : world.armedFarmers){
-			next = world.yard.getObjectLocation(f);
+			for(Farmer f : world.armedFarmers){
+				next = world.yard.getObjectLocation(f);
 
-			if(next != null){
-				if(me.distance(next) < dist){
-					dist = me.distance(next);
-					nearest = f;
+				if(next != null){
+					if(me.distance(next) < dist){
+						dist = me.distance(next);
+						nearest = f;
+					}
 				}
 			}
+			if( dist< max_dist ){
+				world.isEaten(nearest);
+				movement = new MutableDouble2D();
+			}
+			else{
+				Double2D aim = world.yard.getObjectLocation(nearest);
+				movement = new MutableDouble2D(me.x - aim.x , me.y - aim.y);
+			}
+			//	movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
+
 		}
-		if( dist< max_dist*max_dist*2 ){
-			world.isEaten(nearest);
-			movement = new MutableDouble2D();
-		}
-		else{
-			Double2D aim = world.yard.getObjectLocation(nearest);
-			movement = new MutableDouble2D(me.x - aim.x , me.y - aim.y);
-		}
-		//	movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
 
 	}
 
