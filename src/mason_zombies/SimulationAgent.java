@@ -24,10 +24,10 @@ public abstract class SimulationAgent implements Steppable{
 
 		MutableDouble2D forceVector = new MutableDouble2D();
 		MutableDouble2D sumForces = new MutableDouble2D();
-		
+
 
 		int len = people.size();
-		
+
 		for(int buddy = 0 ; buddy < len; buddy++){
 
 			Edge e = (Edge)(people.get(buddy));
@@ -51,45 +51,49 @@ public abstract class SimulationAgent implements Steppable{
 				sumForces.addIn(forceVector);
 			}
 		}
-		sumForces.x=sumForces.x/yard.width;
-		sumForces.y=sumForces.y/yard.height;
+		//sumForces.x=sumForces.x/yard.width;
+		//sumForces.y=sumForces.y/yard.height;
 		return sumForces;
-		
+
 	}
 
+
+	boolean dead;
 	abstract protected void positionProcessing(World world) ;
 
 	@Override
 	public void step(SimState arg0) {
-		
+
 		World world = (World) arg0;
 
+		dead = false;
 		Double2D me = world.yard.getObjectLocation(this);
 
-		
+
+
+
 		positionProcessing(world);
 
 
-	
-		movement.setLength(Math.min(movement.length(), max_dist));
+		if(!dead){
+			movement.setLength(Math.min(movement.length(), max_dist));
 
-	//	movement=miniBresenham(me,movement,world, world.obstacles.field);
-		movement.addIn(world.yard.getObjectLocation(this));
+			//	movement=miniBresenham(me,movement,world, world.obstacles.field);
+			movement.addIn(me);
 
-		
-		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
-		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
-		//if(this.getClass()!=Zombie.class)movement=miniBresenham(me,movement,world,world.obstacles.field);
-		//movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
-		//movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
-		world.yard.setObjectLocation(this, new Double2D(movement));
+
+			movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
+			movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
+			world.yard.setObjectLocation(this, new Double2D(movement));
+		}
+
 	}
-	
+
 	public MutableDouble2D miniBresenham( Double2D p2,MutableDouble2D p1,World world, int[][] field){
 		MutableDouble2D res=new MutableDouble2D();
 		int x=(int)Math.round(p1.x),x2=(int)Math.round(p2.x),y=(int)Math.round(p1.y),y2=(int)Math.round(p2.y);
 		boolean steep=y-y2 > x-x2;
-		
+
 		if(steep){
 			int tmp=x;
 			x=y;
@@ -97,10 +101,10 @@ public abstract class SimulationAgent implements Steppable{
 			tmp=x2;
 			x2=y2;
 			y2=tmp;
-			
+
 		}
 		if(x<x2){
-		
+
 			int tmp=x;
 			x=x2;
 			x2=tmp;
@@ -114,12 +118,12 @@ public abstract class SimulationAgent implements Steppable{
 		double e=2*delta.y-delta.x;
 		for(int i=1;i<delta.x;i++){
 			while(e>=0){
-	res.y+=1;
-				
+				res.y+=1;
+
 				res.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
 				if(field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
 					res.y-=1;
-					
+
 				e-=2*delta.x;
 			}
 			res.x+=1;
@@ -129,13 +133,13 @@ public abstract class SimulationAgent implements Steppable{
 
 			e+=2*delta.y;
 		}
-		
+
 		if(steep){
 			double tmp=res.x;
 			res.x=res.y;
 			res.y=tmp;
 		}
-		
+
 		return res;
 	}
 

@@ -5,8 +5,9 @@ import sim.engine.Steppable;
 import sim.util.Bag;
 import sim.util.Double2D;
 
-public class Arme implements Steppable{
-	Double2D pos;
+public class Arme extends SimulationAgent{
+
+
 	@Override
 	public void step(SimState arg0) {
 		World world=(World)arg0;
@@ -22,5 +23,10 @@ public class Arme implements Steppable{
 			
 			
 		}
+	}
+	@Override
+	protected void positionProcessing(World world) {
+		// TODO Auto-generated method stub
+		
 	}
 }

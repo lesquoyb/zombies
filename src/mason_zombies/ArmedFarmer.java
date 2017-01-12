@@ -9,7 +9,7 @@ public class ArmedFarmer extends Farmer{
 		last = - limit;
 	}
 	
-double range = 20;
+	double range = 20;
 	int limit = 100;
 	long last;
 	
