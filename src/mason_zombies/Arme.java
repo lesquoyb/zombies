@@ -6,8 +6,11 @@ import sim.util.Bag;
 import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
-public class Arme implements Steppable{
+
+public class Arme extends SimulationAgent{
 	MutableDouble2D pos;
+
+
 	@Override
 	public void step(SimState arg0) {
 		World world=(World)arg0;
@@ -26,6 +29,13 @@ public class Arme implements Steppable{
 		pos.y=world.random.nextDouble()*world.height;
 			
 			
-		}
-	
+		
+
+	}
+	@Override
+	protected void positionProcessing(World world) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

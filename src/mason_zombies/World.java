@@ -20,8 +20,10 @@ public class World extends SimState{
 	public Continuous2D yard = new Continuous2D(1.0, 100, 100);
 	public int numFarmers = 50;
 	public int numArmed = 1;
-	public int numZombies = 10;
-	public int nbcaisse=1;
+
+	public int numZombies = 20;
+	public int numWeapons = 1;
+
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
 	public int width=(int)yard.getWidth();
@@ -30,6 +32,10 @@ public class World extends SimState{
 	List<Farmer> farmers = new ArrayList<>();
 	List<Zombie> zombies = new ArrayList<>();
 	List<ArmedFarmer> armedFarmers = new ArrayList<>();
+	List<Arme> weapons = new ArrayList<>();
+	
+	List<Bullet> bullets = new ArrayList<>();
+	
 	Map<SimulationAgent, Stoppable> stop = new HashMap();
 	public IntGrid2D obstacles;
 	
@@ -44,22 +50,27 @@ public class World extends SimState{
 		stop.get(b).stop();
 	}
 	
-	
-	public void isEaten(Farmer f){
-		Double2D c = yard.getObjectLocation(f);
-		
-		addZombie(
-				new Double2D(c.x +random.nextDouble()*0.03*yard.width, c.y + random.nextDouble()* 0.04*yard.height )
-				//
-				);
-		
+	public void removeFarmer(Farmer f){
 		farmers.remove(f);
 		armedFarmers.remove(f);
 		friends.removeNode(f);
 		predators.removeNode(f);
 		yard.remove(f);
 		stop.get(f).stop();
-		System.out.println("" + farmers.size() + " " + yard.size());
+	}
+	
+	
+	public void removeWeapon(Arme w){
+		yard.remove(w);
+		weapons.remove(w);
+		stop.get(w).stop();
+	}
+	public void isEaten(Farmer f){
+		Double2D c = yard.getObjectLocation(f);
+		
+		addZombie(new Double2D(c.x +random.nextDouble()*0.03*yard.width, c.y + random.nextDouble()* 0.04*yard.height ));
+		
+		removeFarmer(f);
 	}
 	
 	public void shot(Zombie z, Bullet b){
@@ -72,8 +83,6 @@ public class World extends SimState{
 	}
 	
 	
-	List<Bullet> bullets = new ArrayList<>();
-	
 	public void fire(Double2D from,Double2D to){
 		Bullet b = new Bullet(from, to);
 		bullets.add(b);
@@ -84,6 +93,7 @@ public class World extends SimState{
 	public void start(){
 		super.start();
 		
+		weapons.clear();
 		yard.clear();
 		predators.clear();
 		friends.clear();
@@ -110,9 +120,11 @@ public class World extends SimState{
 			addZombie(new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width, height*random.nextDouble()*0.8+height*0.1));
 		}
 		
-		for(int i=0;i<nbcaisse;i++){
-			addArme(new Double2D(width*random.nextDouble(),height*random.nextDouble()));
+
+		for(int i = 0; i < numWeapons; i++){
+			addWeapon(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
 		}
+
 		Bag friendsBag = friends.getAllNodes();
 		for(int i = 0; i < friendsBag.size(); i++){
 			Object friend = friendsBag.get(i);
@@ -166,7 +178,7 @@ public class World extends SimState{
 	}
 
 	
-	private void addFarmer(Double2D pos){
+	public void addFarmer(Double2D pos){
 		Farmer farmer = new Farmer();
 		yard.setObjectLocation(	farmer, pos);
 		stop.put(farmer, schedule.scheduleRepeating(farmer));
@@ -189,10 +201,12 @@ public class World extends SimState{
 		friends.addNode(farmer);
 		armedFarmers.add(farmer);
 	}
-	public void addArme(Double2D pos){
-		Arme arme=new Arme();
-		yard.setObjectLocation(arme, pos);
-		this.arme.add(arme);
+
+	public void addWeapon(Double2D pos){
+		Arme w = new Arme();
+		weapons.add(w);
+		yard.setObjectLocation(w, pos);
+		stop.put(w, schedule.scheduleRepeating(w));
 	}
-	
+
 }
