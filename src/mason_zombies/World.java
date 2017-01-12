@@ -22,7 +22,7 @@ public class World extends SimState{
 
 	public int numArmed = 0;
 
-	public int numZombies = 20;
+	public int numZombies = 50;
 	public int numWeapons = 1;
 
 	public Network predators = new Network(true);
@@ -219,6 +219,7 @@ public class World extends SimState{
 
 	public void addWeapon(Double2D pos){
 		Arme w = new Arme();
+		stop.put(w, schedule.scheduleRepeating(w));
 		weapons.add(w);
 		yard.setObjectLocation(w, pos);
 		

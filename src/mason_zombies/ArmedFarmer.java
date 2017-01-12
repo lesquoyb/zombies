@@ -18,7 +18,7 @@ public class ArmedFarmer extends Farmer{
 
 	@Override
 	protected void positionProcessing(World world) {
-		super.positionProcessing(world);
+		movement = friendsBarycenter(world.friends.getEdges(this, null),  world.yard);
 		if(!dead){
 			Double2D me = world.yard.getObjectLocation(this);
 			for(Zombie zombie : world.zombies){
