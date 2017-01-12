@@ -66,19 +66,20 @@ public abstract class SimulationAgent implements Steppable{
 		positionProcessing(world);
 
 
-		movement.multiplyIn(5./max_dist);
+		//movement.multiplyIn(5./max_dist);
 	
 		movement.setLength(Math.min(movement.length(), max_dist));
 
+	//	movement=miniBresenham(me,movement,world, world.obstacles.field);
 		movement.addIn(world.yard.getObjectLocation(this));
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height));
-		movement=miniBrasenham(me,movement,world);
+		
 		
 		world.yard.setObjectLocation(this, new Double2D(movement));
 	}
 	
-	public MutableDouble2D miniBrasenham( Double2D p2,MutableDouble2D p1,World world){
+	public MutableDouble2D miniBresenham( Double2D p2,MutableDouble2D p1,World world, int[][] field){
 		MutableDouble2D res=new MutableDouble2D();
 		res.x=p2.x;
 		res.y=p2.y;
@@ -86,11 +87,11 @@ public abstract class SimulationAgent implements Steppable{
 		double e=2*delta.y-delta.x;
 		for(int i=1;i<delta.x;i++){
 			while(e>=0){
-				if(world.obstacles.field[(int)res.x][(int)res.y+1]==0)
+				if(field[(int)res.x][(int)res.y+1]==0)
 					res.y+=1;
 				e-=2*delta.x;
 			}
-			if(world.obstacles.field[(int)res.x+1][(int)res.y]==0)
+			if(field[(int)res.x+1][(int)res.y]==0)
 				res.x+=1;
 			e+=2*delta.y;
 		}
