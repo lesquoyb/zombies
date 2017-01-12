@@ -10,27 +10,26 @@ import sim.util.MutableDouble2D;
 public class Arme implements Steppable{
 	MutableDouble2D pos;
 
+	public Arme(){
+		pos = new MutableDouble2D();
+	}
 
 	@Override
 	public void step(SimState arg0) {
 		World world=(World)arg0;
-		for(Farmer f : world.farmers){
-			if(world.yard.getObjectLocation(f).equals(pos)){
-				world.addArmedFarmer(world.yard.getObjectLocation(f));
-				world.farmers.remove(f);
-				mouv(world);
-			}
-		}
-		
-		
+		world.yard.setObjectLocation(this, new Double2D(pos));
 	}
+
 	public void mouv(World world){
 		pos.x=world.random.nextDouble()*world.width;
 		pos.y=world.random.nextDouble()*world.height;
-			
-			
-		
-
 	}
+
+//	@Override
+//	protected void positionProcessing(World world) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 
 }
