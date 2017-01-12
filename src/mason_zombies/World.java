@@ -43,6 +43,13 @@ public class World extends SimState{
 	
 	
 	public void isEaten(Farmer f){
+		Double2D c = yard.getObjectLocation(f);
+		
+		addZombie(
+				new Double2D(c.x +random.nextDouble()*0.03*yard.width, c.y + random.nextDouble()* 0.04*yard.height )
+				//
+				);
+		
 		farmers.remove(f);
 		armedFarmers.remove(f);
 		friends.removeNode(f);
@@ -70,6 +77,7 @@ public class World extends SimState{
 		stop.put(b, schedule.scheduleRepeating(b));
 	}
 	
+
 	public void start(){
 		super.start();
 		
@@ -86,38 +94,16 @@ public class World extends SimState{
 		//setObstacles();
 		
 		for(int i = 0; i < numFarmers; i++){
-			Farmer farmer = new Farmer();
-			yard.setObjectLocation(	farmer, 
-					new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width,
-								 random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
-			stop.put(farmer, schedule.scheduleRepeating(farmer));
-
-			friends.addNode(farmer);
-			farmers.add(farmer);
+			addFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
 		}
 		
 		for(int i = 0; i < numArmed; i++){
-			ArmedFarmer farmer = new ArmedFarmer();
-			yard.setObjectLocation(	farmer, 
-					new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width,
-								 random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
-			stop.put(farmer, schedule.scheduleRepeating(farmer));
-
-			friends.addNode(farmer);
-			armedFarmers.add(farmer);
+			addArmedFarmer(new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width, random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
 		}
 		
 
 		for(int i = 0; i < numZombies; i++){
-			Zombie zombie = new Zombie();
-			yard.setObjectLocation(	zombie, 
-									new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width,
-									height*random.nextDouble()*0.8+height*0.1));
-			stop.put(zombie, schedule.scheduleRepeating(zombie));
-			zombies.add(zombie);
-			for(Farmer f : farmers){
-				predators.addEdge(zombie, f, 1.);
-			}
+			addZombie(new Double2D(width * 0.85 + random.nextDouble()*width*0.1-0.05*width, height*random.nextDouble()*0.8+height*0.1));
 		}
 
 		Bag friendsBag = friends.getAllNodes();
@@ -173,6 +159,28 @@ public class World extends SimState{
 	}
 
 	
-	
+	private void addFarmer(Double2D pos){
+		Farmer farmer = new Farmer();
+		yard.setObjectLocation(	farmer, pos);
+		stop.put(farmer, schedule.scheduleRepeating(farmer));
+		friends.addNode(farmer);
+		farmers.add(farmer);
+	}
+	private void addZombie(Double2D pos){
+		Zombie zombie = new Zombie();
+		yard.setObjectLocation(	zombie, pos);
+		stop.put(zombie, schedule.scheduleRepeating(zombie));
+		zombies.add(zombie);
+		for(Farmer f : farmers){
+			predators.addEdge(zombie, f, 1.);
+		}
+	}
+	public void addArmedFarmer(Double2D pos){
+		ArmedFarmer farmer = new ArmedFarmer();
+		yard.setObjectLocation(	farmer, pos);
+		stop.put(farmer, schedule.scheduleRepeating(farmer));
+		friends.addNode(farmer);
+		armedFarmers.add(farmer);
+	}
 	
 }

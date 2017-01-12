@@ -1,7 +1,5 @@
 package mason_zombies;
 
-import sim.engine.SimState;
-import sim.engine.Steppable;
 import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
@@ -17,6 +15,7 @@ public class Zombie extends SimulationAgent{
 	@Override
 	protected void positionProcessing(World world) {
 
+		movement = new MutableDouble2D();
 		if(world.friends.getAllNodes().size() > 0){
 			Farmer nearest = null;
 			double dist = Double.MAX_VALUE;
