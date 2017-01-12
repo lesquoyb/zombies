@@ -74,17 +74,19 @@ public abstract class SimulationAgent implements Steppable{
 	
 		movement.setLength(Math.min(movement.length(), max_dist));
 
+	//	movement=miniBresenham(me,movement,world, world.obstacles.field);
 		movement.addIn(world.yard.getObjectLocation(this));
+
 		
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
-		if(this.getClass()!=Zombie.class)movement=miniBrasenham(me,movement,world);
+		if(this.getClass()!=Zombie.class)movement=miniBresenham(me,movement,world,world.obstacles.field);
 		movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
 		movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
 		world.yard.setObjectLocation(this, new Double2D(movement));
 	}
 	
-	public MutableDouble2D miniBrasenham( Double2D p2,MutableDouble2D p1,World world){
+	public MutableDouble2D miniBresenham( Double2D p2,MutableDouble2D p1,World world, int[][] field){
 		MutableDouble2D res=new MutableDouble2D();
 		int x=(int)Math.round(p1.x),x2=(int)Math.round(p2.x),y=(int)Math.round(p1.y),y2=(int)Math.round(p2.y);
 		boolean steep=y-y2 > x-x2;
@@ -113,18 +115,19 @@ public abstract class SimulationAgent implements Steppable{
 		double e=2*delta.y-delta.x;
 		for(int i=1;i<delta.x;i++){
 			while(e>=0){
-				res.y+=1;
+	res.y+=1;
 				
 				res.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));
-				if(world.obstacles.field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
+				if(field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
 					res.y-=1;
 					
 				e-=2*delta.x;
 			}
 			res.x+=1;
 			res.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
-			if(world.obstacles.field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
+			if(field[(int)Math.round(res.x)][(int)Math.round(res.y)]==1)
 				res.x-=1;
+
 			e+=2*delta.y;
 		}
 		

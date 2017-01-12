@@ -15,8 +15,10 @@ import sim.portrayal.continuous.ContinuousPortrayal2D;
 import sim.portrayal.grid.FastValueGridPortrayal2D;
 import sim.portrayal.network.NetworkPortrayal2D;
 import sim.portrayal.network.SimpleEdgePortrayal2D;
-import sim.portrayal.network.SpatialNetwork2D;
-import sim.portrayal.simple.*;
+import sim.portrayal.simple.HexagonalPortrayal2D;
+import sim.portrayal.simple.OrientedPortrayal2D;
+import sim.portrayal.simple.OvalPortrayal2D;
+import sim.portrayal.simple.RectanglePortrayal2D;
 
 public class WorldGUI extends GUIState {
 
@@ -43,9 +45,10 @@ public class WorldGUI extends GUIState {
 		World world = (World) state;
 		// tell the portrayals what to portray and how to portray them
 		yardPortrayal.setField( world.yard );
-		yardPortrayal.setPortrayalForClass(Farmer.class,new OvalPortrayal2D(lcolor.get(0)));
-		yardPortrayal.setPortrayalForClass(ArmedFarmer.class, new RectanglePortrayal2D(lcolor.get(1)));
+		yardPortrayal.setPortrayalForClass(Farmer.class,new OrientedPortrayal2D(new OvalPortrayal2D(lcolor.get(0))));
+		yardPortrayal.setPortrayalForClass(ArmedFarmer.class, new OrientedPortrayal2D(new OvalPortrayal2D(lcolor.get(1))));
 		yardPortrayal.setPortrayalForClass(Zombie.class, new HexagonalPortrayal2D(lcolor.get(2)));
+		yardPortrayal.setPortrayalForClass(Bullet.class, new HexagonalPortrayal2D(lcolor.get(3)));
 		//buddiesPortrayal.setField( new SpatialNetwork2D( world.yard, world.predators ) );
 		buddiesPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
 		obstaclesPortrayal.setField(world.obstacles);
@@ -66,7 +69,7 @@ public class WorldGUI extends GUIState {
 		display = new Display2D(600,600,this);
 		display.setClipping(false);
 		displayFrame = display.createFrame();
-		displayFrame.setTitle("Schoolyard Display");
+		displayFrame.setTitle("Simulation d'attaque de zombies");
 		c.registerFrame(displayFrame);        // so the frame appears in the "Display" list
 		displayFrame.setVisible(true);
 		display.attach( yardPortrayal, "Yard" );
@@ -108,6 +111,7 @@ public class WorldGUI extends GUIState {
 		lcolor.add(new Color(255,0,0));
 		lcolor.add(new Color(0,0,255));
 		lcolor.add(new Color(0,255,0));
+		lcolor.add(new Color(0, 0, 0));
 	}
 	public static String getName()
 	{

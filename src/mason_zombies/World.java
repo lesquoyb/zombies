@@ -18,8 +18,8 @@ public class World extends SimState{
 
 	public Continuous2D yard = new Continuous2D(1.0, 100, 100);
 	public int numFarmers = 50;
-	public int numArmed = 10;
-	public int numZombies = 1;
+	public int numArmed = 1;
+	public int numZombies = 10;
 	public Network predators = new Network(true);
 	public Network friends = new Network(false);
 	public int width=(int)yard.getWidth();
@@ -35,6 +35,13 @@ public class World extends SimState{
 	}
 	
 
+	public void remove(Bullet b){
+		yard.remove(b);
+		bullets.remove(b);
+		stop.get(b).stop();
+	}
+	
+	
 	public void isEaten(Farmer f){
 		farmers.remove(f);
 		armedFarmers.remove(f);
@@ -44,6 +51,25 @@ public class World extends SimState{
 		stop.get(f).stop();
 		System.out.println("" + farmers.size() + " " + yard.size());
 	}
+	
+	public void shot(Zombie z, Bullet b){
+		zombies.remove(z);
+		predators.removeNode(z);
+		yard.remove(z);		
+		stop.get(z).stop();
+		
+		remove(b);
+	}
+	
+	
+	List<Bullet> bullets = new ArrayList<>();
+	
+	public void fire(Double2D from,Double2D to){
+		Bullet b = new Bullet(from, to);
+		bullets.add(b);
+		stop.put(b, schedule.scheduleRepeating(b));
+	}
+	
 	public void start(){
 		super.start();
 		
@@ -53,6 +79,8 @@ public class World extends SimState{
 		farmers.clear();
 		armedFarmers.clear();
 		stop.clear();
+		bullets.clear();
+		zombies.clear();
 		
 		obstacles = new IntGrid2D((int)yard.width,(int)yard.height,0);
 		setObstacles();
@@ -67,6 +95,18 @@ public class World extends SimState{
 			friends.addNode(farmer);
 			farmers.add(farmer);
 		}
+		
+		for(int i = 0; i < numArmed; i++){
+			ArmedFarmer farmer = new ArmedFarmer();
+			yard.setObjectLocation(	farmer, 
+					new Double2D(random.nextDouble()*yard.getWidth()*0.80+0.1*width,
+								 random.nextDouble()* yard.getHeight()*0.80+0.1*height ));
+			stop.put(farmer, schedule.scheduleRepeating(farmer));
+
+			friends.addNode(farmer);
+			armedFarmers.add(farmer);
+		}
+		
 
 		for(int i = 0; i < numZombies; i++){
 			Zombie zombie = new Zombie();

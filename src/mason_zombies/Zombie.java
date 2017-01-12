@@ -43,11 +43,12 @@ public class Zombie extends SimulationAgent{
 			}
 
 			Double2D aim = world.yard.getObjectLocation(nearest);
-			if( dist< max_dist ){
+			if( dist < max_dist ){
 				world.isEaten(nearest);
 			}
 
-				movement = new MutableDouble2D(aim.x - me.x  , aim.y - me.y );
+			
+			movement = new MutableDouble2D(aim.x - me.x  , aim.y - me.y );
 			
 			//	movement.addIn(friendsBarycenter(world.predators.getEdgesIn(this), world.yard).negate());
 
