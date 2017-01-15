@@ -51,8 +51,8 @@ public abstract class SimulationAgent implements Steppable{
 				sumForces.addIn(forceVector);
 			}
 		}
-		sumForces.x=sumForces.x/yard.width;
-		sumForces.y=sumForces.y/yard.height;
+		//sumForces.x=sumForces.x/yard.width;
+		//sumForces.y=sumForces.y/yard.height;
 		return sumForces;
 
 	}
@@ -80,7 +80,7 @@ public abstract class SimulationAgent implements Steppable{
 
 			//	movement=miniBresenham(me,movement,world, world.obstacles.field);
 			movement.addIn(me);
-
+			
 
 			movement.setX(Math.min(Math.max(0, movement.x), world.yard.width-1));//on ne sort pas de la map
 			movement.setY(Math.min(Math.max(0, movement.y), world.yard.height-1));

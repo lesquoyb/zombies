@@ -1,5 +1,6 @@
 package mason_zombies;
 
+import sim.field.network.Edge;
 import sim.util.Bag;
 import sim.util.Double2D;
 
@@ -7,7 +8,7 @@ public class Farmer extends SimulationAgent{
 
 
 	public Farmer(){
-		max_dist = 3;
+		max_dist = 0.3;
 	}
 
 	double fear = 2;
@@ -28,7 +29,11 @@ public class Farmer extends SimulationAgent{
 		}
 		if(nearest != null){
 			if(dist < max_dist){
-				world.addArmedFarmer(world.yard.getObjectLocation(nearest), true);
+				ArmedFarmer af = world.addArmedFarmer(world.yard.getObjectLocation(this), false);
+				for(Object f : world.friends.getEdges(this, people)){
+					Farmer e = (Farmer) ((Edge) f).getOtherNode(this);
+					world.friends.addEdge(e, af, (Double)((Edge) f).getInfo());
+				}
 				world.removeFarmer(this);
 				nearest.mouv(world);
 				dead = true;

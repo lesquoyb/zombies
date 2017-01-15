@@ -1,9 +1,11 @@
 package mason_zombies;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.Format;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -21,6 +23,7 @@ import sim.portrayal.simple.ImagePortrayal2D;
 import sim.portrayal.simple.OrientedPortrayal2D;
 import sim.portrayal.simple.OvalPortrayal2D;
 import sim.portrayal.simple.RectanglePortrayal2D;
+import sim.util.media.MovieEncoder;
 
 public class WorldGUI extends GUIState {
 
@@ -32,6 +35,7 @@ public class WorldGUI extends GUIState {
 	NetworkPortrayal2D buddiesPortrayal = new NetworkPortrayal2D();
 	List<Color> lcolor = new ArrayList<Color>();
 	FastValueGridPortrayal2D obstaclesPortrayal = new FastValueGridPortrayal2D("Obstacle", true);
+	
 	
 	public void start(){
 		super.start();

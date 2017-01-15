@@ -6,10 +6,11 @@ public class ArmedFarmer extends Farmer{
 
 	int remaining_shots;
 	public ArmedFarmer() {
-		max_dist = 0.1;
+		max_dist = 2;
 		last = - limit;
 		remaining_shots = 2;
 		fear =  0;
+		depth_of_view = 10 * max_dist;
 	}
 
 	double range = 20;

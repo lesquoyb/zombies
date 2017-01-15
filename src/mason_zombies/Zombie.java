@@ -7,7 +7,7 @@ public class Zombie extends SimulationAgent{
 
 	public Zombie() {
 		depth_of_view = 100;
-		max_dist = 0.05;
+		max_dist = 0.1;
 	}
 
 

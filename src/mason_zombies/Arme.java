@@ -29,11 +29,6 @@ public class Arme extends SimulationAgent{
 		pos.y=world.random.nextDouble()*world.height;
 	}
 
-//	@Override
-//	protected void positionProcessing(World world) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 
 }
